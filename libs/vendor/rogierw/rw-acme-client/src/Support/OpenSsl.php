@@ -14,7 +14,7 @@ class OpenSsl
             'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
         ]);
 
-        if (!openssl_pkey_export($key, $out, '', [
+        if (!openssl_pkey_export($key, $out, null, [
             'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
         ])) {
             throw new RuntimeException('Exporting SSL key failed.');
