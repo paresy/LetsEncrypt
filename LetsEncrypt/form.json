@@ -1,0 +1,23 @@
+{
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "EMailAddress",
+            "caption": "E-Mail Address"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Domain",
+            "caption": "Domain"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Button",
+            "caption": "Fetch certificate",
+            "onClick": "LE_FetchCertificate($id);"
+        }
+    ],
+    "status": [
+    ]
+}

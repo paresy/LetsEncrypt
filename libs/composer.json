@@ -1,0 +1,5 @@
+{
+    "require": {
+        "rogierw/rw-acme-client": "1.0.7"
+    }
+}

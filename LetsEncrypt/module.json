@@ -1,0 +1,12 @@
+{
+    "id": "{D77E172A-9F2E-643C-E57A-9EAEC43FD021}",
+    "name": "LetsEncrypt",
+    "type": 0,
+    "vendor": "",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "LE",
+    "url": "http://github.com/paresy/LetsEncrypt"
+}

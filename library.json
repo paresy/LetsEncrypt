@@ -1,0 +1,12 @@
+{
+    "id": "{9EB963F7-5E30-E95D-D62F-D53D0BD49F35}",
+    "name": "LetsEncrypt",
+    "author": "Michael Maroszek",
+    "url": "http://github.com/paresy/LetsEncrypt",
+    "compatibility": {
+        "version": "5.4"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}
