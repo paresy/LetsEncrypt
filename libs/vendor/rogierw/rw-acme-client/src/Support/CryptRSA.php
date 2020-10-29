@@ -11,9 +11,12 @@ class CryptRSA
         $res = openssl_pkey_new([
             'private_key_type' => OPENSSL_KEYTYPE_RSA,
             'private_key_bits' => 4096,
+            'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
         ]);
 
-        if (!openssl_pkey_export($res, $privateKey)) {
+        if (!openssl_pkey_export($res, $privateKey, '', [
+            'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
+        ])) {
             throw new RuntimeException('RSA keypair export failed.');
         }
 
