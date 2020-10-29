@@ -43,21 +43,23 @@
 
             $this->SendDebug("ORDER", print_r($order, true), 0);
 
-            $validationStatus = $client->domainValidation()->status($order);
+            if($order->isPending()) {
+                $validationStatus = $client->domainValidation()->status($order);
 
-            $this->SendDebug("STATUS", print_r($validationStatus, true), 0);
+                $this->SendDebug("STATUS", print_r($validationStatus, true), 0);
 
-            $validationData = $client->domainValidation()->getFileValidationData($validationStatus);
+                $validationData = $client->domainValidation()->getFileValidationData($validationStatus);
 
-            $this->SendDebug("DATA", print_r($validationData, true), 0);
+                $this->SendDebug("DATA", print_r($validationData, true), 0);
 
-            if(!is_dir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge")) {
-                mkdir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge", 0777, true);
+                if (!is_dir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge")) {
+                    mkdir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge", 0777, true);
+                }
+
+                file_put_contents(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge/" . $validationData[0]['filename'], $validationData[0]['content']);
+
+                $client->domainValidation()->start($account, $validationStatus[0]);
             }
-
-            file_put_contents(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge/" . $validationData[0]['filename'], $validationData[0]['content']);
-
-            $client->domainValidation()->start($account, $validationStatus[0]);
 
             $privateKey = \Rogierw\RwAcme\Support\OpenSsl::generatePrivateKey();
             $csr = \Rogierw\RwAcme\Support\OpenSsl::generateCsr([$this->ReadPropertyString("Domain")], $privateKey);
