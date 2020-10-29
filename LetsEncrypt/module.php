@@ -66,7 +66,7 @@
 
             $this->SendDebug("PRIVATE KEY", print_r($privateKey, true), 0);
 
-            if ($order->isReady() && $client->domainValidation()->challengeSucceeded($order, DomainValidation::TYPE_HTTP)) {
+            if ($order->isReady() && $client->domainValidation()->challengeSucceeded($order, \Rogierw\RwAcme\Endpoints\DomainValidation::TYPE_HTTP)) {
                 $client->order()->finalize($order, $csr);
             }
 
