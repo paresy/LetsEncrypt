@@ -1,35 +1,37 @@
 <?php
 
-    require_once __DIR__ . "/../libs/vendor/autoload.php";
+declare(strict_types=1);
 
-	class LetsEncrypt extends IPSModule {
+    require_once __DIR__ . '/../libs/vendor/autoload.php';
 
-		public function Create()
-		{
-			//Never delete this line!
-			parent::Create();
-
-            $this->RegisterPropertyString("EMailAddress", "");
-			$this->RegisterPropertyString("Domain", "");
-			$this->RegisterPropertyInteger("WebServerID", 0);
-		}
-
-		public function Destroy()
-		{
-			//Never delete this line!
-			parent::Destroy();
-		}
-
-		public function ApplyChanges()
-		{
-			//Never delete this line!
-			parent::ApplyChanges();
-		}
-
-		public function FetchCertificate()
+    class LetsEncrypt extends IPSModule
+    {
+        public function Create()
         {
-            if(!is_dir(IPS_GetKernelDir() . "_account")) {
-                mkdir(IPS_GetKernelDir() . "_account", 0777, true);
+            //Never delete this line!
+            parent::Create();
+
+            $this->RegisterPropertyString('EMailAddress', '');
+            $this->RegisterPropertyString('Domain', '');
+            $this->RegisterPropertyInteger('WebServerID', 0);
+        }
+
+        public function Destroy()
+        {
+            //Never delete this line!
+            parent::Destroy();
+        }
+
+        public function ApplyChanges()
+        {
+            //Never delete this line!
+            parent::ApplyChanges();
+        }
+
+        public function FetchCertificate()
+        {
+            if (!is_dir(IPS_GetKernelDir() . '_account')) {
+                mkdir(IPS_GetKernelDir() . '_account', 0777, true);
             }
 
             $client = new Rogierw\RwAcme\Api($this->ReadPropertyString('EMailAddress'), IPS_GetKernelDir() . '/_account');
@@ -40,32 +42,32 @@
                 $account = $client->account()->get();
             }
 
-            $order = $client->order()->new($account, [$this->ReadPropertyString("Domain")]);
+            $order = $client->order()->new($account, [$this->ReadPropertyString('Domain')]);
 
-            $this->SendDebug("ORDER", print_r($order, true), 0);
+            $this->SendDebug('ORDER', print_r($order, true), 0);
 
-            if($order->isPending()) {
+            if ($order->isPending()) {
                 $validationStatus = $client->domainValidation()->status($order);
 
-                $this->SendDebug("STATUS", print_r($validationStatus, true), 0);
+                $this->SendDebug('STATUS', print_r($validationStatus, true), 0);
 
                 $validationData = $client->domainValidation()->getFileValidationData($validationStatus);
 
-                $this->SendDebug("DATA", print_r($validationData, true), 0);
+                $this->SendDebug('DATA', print_r($validationData, true), 0);
 
-                if (!is_dir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge")) {
-                    mkdir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge", 0777, true);
+                if (!is_dir(IPS_GetKernelDir() . 'webfront/.well-known/acme-challenge')) {
+                    mkdir(IPS_GetKernelDir() . 'webfront/.well-known/acme-challenge', 0777, true);
                 }
 
-                file_put_contents(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge/" . $validationData[0]['filename'], $validationData[0]['content']);
+                file_put_contents(IPS_GetKernelDir() . 'webfront/.well-known/acme-challenge/' . $validationData[0]['filename'], $validationData[0]['content']);
 
                 $client->domainValidation()->start($account, $validationStatus[0]);
             }
 
             $privateKey = \Rogierw\RwAcme\Support\OpenSsl::generatePrivateKey();
-            $csr = \Rogierw\RwAcme\Support\OpenSsl::generateCsr([$this->ReadPropertyString("Domain")], $privateKey);
+            $csr = \Rogierw\RwAcme\Support\OpenSsl::generateCsr([$this->ReadPropertyString('Domain')], $privateKey);
 
-            $this->SendDebug("PRIVATE KEY", print_r($privateKey, true), 0);
+            $this->SendDebug('PRIVATE KEY', print_r($privateKey, true), 0);
 
             if ($order->isReady() && $client->domainValidation()->challengeSucceeded($order, \Rogierw\RwAcme\Endpoints\DomainValidation::TYPE_HTTP)) {
                 $client->order()->finalize($order, $csr);
@@ -74,16 +76,15 @@
             if ($order->isFinalized()) {
                 $certificateBundle = $client->certificate()->getBundle($order);
 
-                $this->SendDebug("BUNDLE", print_r($certificateBundle, true), 0);
+                $this->SendDebug('BUNDLE', print_r($certificateBundle, true), 0);
 
                 // Apply certificates to Web Server instance
-                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "Certificate", base64_encode($certificateBundle->certificate));
-                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "CertificateAuthority", "");
-                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"),"PrivateKey", base64_encode($privateKey));
-                IPS_ApplyChanges($this->ReadPropertyInteger("WebServerID"));
+                IPS_SetProperty($this->ReadPropertyInteger('WebServerID'), 'Certificate', base64_encode($certificateBundle->certificate));
+                IPS_SetProperty($this->ReadPropertyInteger('WebServerID'), 'CertificateAuthority', '');
+                IPS_SetProperty($this->ReadPropertyInteger('WebServerID'), 'PrivateKey', base64_encode($privateKey));
+                IPS_ApplyChanges($this->ReadPropertyInteger('WebServerID'));
 
-                echo $this->Translate("Success. Please restart IP-Symcon!");
+                echo $this->Translate('Success. Please restart IP-Symcon!');
             }
         }
-
-	}
+    }
