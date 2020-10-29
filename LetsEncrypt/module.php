@@ -43,7 +43,7 @@
 
             $validationStatus = $client->domainValidation()->status($order);
 
-            $this->SendDebug("STATUS", $validationStatus, 0);
+            $this->SendDebug("STATUS", print_r($validationStatus, true), 0);
 
             $validationData = $client->domainValidation()->getFileValidationData($validationStatus);
 
