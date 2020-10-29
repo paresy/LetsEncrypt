@@ -11,6 +11,7 @@ class OpenSsl
         $key = openssl_pkey_new([
             'private_key_bits' => 2048,
             'digest_alg'       => 'sha256',
+            'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
         ]);
 
         if (!openssl_pkey_export($key, $out)) {

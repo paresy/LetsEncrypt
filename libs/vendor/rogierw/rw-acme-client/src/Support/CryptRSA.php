@@ -14,9 +14,7 @@ class CryptRSA
             'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
         ]);
 
-        if (!openssl_pkey_export($res, $privateKey, '', [
-            'config' => __DIR__ . '/../../../../../../LetsEncrypt/openssl.cnf'
-        ])) {
+        if (!openssl_pkey_export($res, $privateKey)) {
             throw new RuntimeException('RSA keypair export failed.');
         }
 
