@@ -77,7 +77,7 @@
                 $this->SendDebug("BUNDLE", print_r($certificateBundle, true), 0);
 
                 // Apply certificates to Web Server instance
-                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "Certificate", base64_encode($certificateBundle['certificate']));
+                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "Certificate", base64_encode($certificateBundle->certificate));
                 IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "CertificateAuthority", "");
                 IPS_SetProperty($this->ReadPropertyInteger("WebServerID"),"PrivateKey", base64_encode($privateKey));
                 IPS_ApplyChanges($this->ReadPropertyInteger("WebServerID"));
