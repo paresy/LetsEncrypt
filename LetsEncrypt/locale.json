@@ -3,7 +3,9 @@
         "de": {
             "E-Mail Address": "E-Mail Adresse",
             "Domain": "Domain",
-            "Web Server": "Web Server"
+            "Web Server": "Web Server",
+            "Fetch new certificate": "Neues Zertifikat anfordern",
+            "Success. Please restart IP-Symcon!": "Erfolg. Bitte IP-Symcon neustarten!"
         }
     }
 }

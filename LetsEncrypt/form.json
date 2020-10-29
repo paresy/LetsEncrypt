@@ -19,7 +19,7 @@
     "actions": [
         {
             "type": "Button",
-            "caption": "Fetch certificate",
+            "caption": "Fetch new certificate",
             "onClick": "LE_FetchCertificate($id);"
         }
     ],

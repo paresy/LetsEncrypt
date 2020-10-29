@@ -82,7 +82,7 @@
                 IPS_SetProperty($this->ReadPropertyInteger("WebServerID"),"PrivateKey", base64_encode($privateKey));
                 IPS_ApplyChanges($this->ReadPropertyInteger("WebServerID"));
 
-                echo "Success. Please restart IP-Symcon!";
+                echo $this->Translate("Success. Please restart IP-Symcon!");
             }
         }
 
