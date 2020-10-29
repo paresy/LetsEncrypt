@@ -47,6 +47,8 @@
 
             $validationData = $client->domainValidation()->getFileValidationData($validationStatus);
 
+            $this->SendDebug("DATA", print_r($validationData, true), 0);
+
             mkdir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge", 0777, true);
 
             file_put_contents(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge/" . $validationData[0]['filename'], $validationData[0]['content']);
