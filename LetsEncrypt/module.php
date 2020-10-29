@@ -27,7 +27,9 @@
 
 		public function FetchCertificate()
         {
-            //mkdir(IPS_GetKernelDir() . "_account", 0777, true);
+            if(!is_dir(IPS_GetKernelDir() . "_account")) {
+                mkdir(IPS_GetKernelDir() . "_account", 0777, true);
+            }
 
             $client = new Rogierw\RwAcme\Api($this->ReadPropertyString('EMailAddress'), IPS_GetKernelDir() . '/_account');
 
@@ -49,7 +51,9 @@
 
             $this->SendDebug("DATA", print_r($validationData, true), 0);
 
-            mkdir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge", 0777, true);
+            if(!is_dir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge")) {
+                mkdir(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge", 0777, true);
+            }
 
             file_put_contents(IPS_GetKernelDir() . "webfront/.well-known/acme-challenge/" . $validationData[0]['filename'], $validationData[0]['content']);
 
@@ -65,7 +69,6 @@
             if ($order->isFinalized()) {
                 $certificateBundle = $client->certificate()->getBundle($order);
             }
-
         }
 
 	}
