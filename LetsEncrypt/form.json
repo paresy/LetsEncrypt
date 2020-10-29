@@ -9,6 +9,11 @@
             "type": "ValidationTextBox",
             "name": "Domain",
             "caption": "Domain"
+        },
+        {
+            "type": "SelectInstance",
+            "name": "WebServerID",
+            "caption": "Web Server"
         }
     ],
     "actions": [

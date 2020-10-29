@@ -11,6 +11,7 @@
 
             $this->RegisterPropertyString("EMailAddress", "");
 			$this->RegisterPropertyString("Domain", "");
+			$this->RegisterPropertyInteger("WebServerID", 0);
 		}
 
 		public function Destroy()
@@ -74,6 +75,14 @@
                 $certificateBundle = $client->certificate()->getBundle($order);
 
                 $this->SendDebug("BUNDLE", print_r($certificateBundle, true), 0);
+
+                // Apply certificates to Web Server instance
+                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "Certificate", base64_encode($certificateBundle['certificate']));
+                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"), "CertificateAuthority", "");
+                IPS_SetProperty($this->ReadPropertyInteger("WebServerID"),"PrivateKey", base64_encode($privateKey));
+                IPS_ApplyChanges($this->ReadPropertyInteger("WebServerID"));
+
+                echo "Success. Please restart IP-Symcon!";
             }
         }
 
