@@ -66,7 +66,7 @@ declare(strict_types=1);
                     mkdir(IPS_GetKernelDir() . 'webfront/.well-known/acme-challenge', 0777, true);
                 }
 
-                $this->SendDebug('URL', 'http://' + $this->ReadPropertyString('Domain') + '/.well-known/acme-challenge/' . $validationData[0]['filename'], 0);
+                $this->SendDebug('URL', 'http://' . $this->ReadPropertyString('Domain') . '/.well-known/acme-challenge/' . $validationData[0]['filename'], 0);
 
                 file_put_contents(IPS_GetKernelDir() . 'webfront/.well-known/acme-challenge/' . $validationData[0]['filename'], $validationData[0]['content']);
 
