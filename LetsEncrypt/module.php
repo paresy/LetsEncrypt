@@ -30,22 +30,29 @@ declare(strict_types=1);
 
         public function FetchCertificate()
         {
+
+            //We create a new folder. This will not work for a Module Store subscription.
+            //We will need to modify the library to work around this issue or use some "tricks" with a folder inside /tmp
             if (!is_dir(IPS_GetKernelDir() . '_account')) {
                 mkdir(IPS_GetKernelDir() . '_account', 0777, true);
             }
 
+            //Create client
             $client = new Rogierw\RwAcme\Api($this->ReadPropertyString('EMailAddress'), IPS_GetKernelDir() . '/_account');
 
+            //Generate public/private key for our account
             if (!$client->account()->exists()) {
                 $account = $client->account()->create();
             } else {
                 $account = $client->account()->get();
             }
 
+            //Create an order for our domain
             $order = $client->order()->new($account, [$this->ReadPropertyString('Domain')]);
 
             $this->SendDebug('ORDER', print_r($order, true), 0);
 
+            //Make a domain validation, if required
             if ($order->isPending()) {
                 $validationStatus = $client->domainValidation()->status($order);
 
@@ -64,15 +71,18 @@ declare(strict_types=1);
                 $client->domainValidation()->start($account, $validationStatus[0]);
             }
 
+            //Create CSR for certificate creation
             $privateKey = \Rogierw\RwAcme\Support\OpenSsl::generatePrivateKey();
             $csr = \Rogierw\RwAcme\Support\OpenSsl::generateCsr([$this->ReadPropertyString('Domain')], $privateKey);
 
             $this->SendDebug('PRIVATE KEY', print_r($privateKey, true), 0);
 
+            //Use CSR to generate the certificate
             if ($order->isReady() && $client->domainValidation()->challengeSucceeded($order, \Rogierw\RwAcme\Endpoints\DomainValidation::TYPE_HTTP)) {
                 $client->order()->finalize($order, $csr);
             }
 
+            //If successful, fetch our fresh certificate and apply it to the Web Server
             if ($order->isFinalized()) {
                 $certificateBundle = $client->certificate()->getBundle($order);
 
