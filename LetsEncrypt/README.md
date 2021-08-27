@@ -1,5 +1,5 @@
 # LetsEncrypt
-Beschreibung des Moduls.
+Erstellt kostenlose SSL Zertifikate für eine WebServer Instanz über Let's Encrypt.
 
 ### Inhaltsverzeichnis
 
@@ -13,7 +13,7 @@ Beschreibung des Moduls.
 
 ### 1. Funktionsumfang
 
-*
+* Diese Modul erlaubt das einfach Anforderung und Aktualisieren von SSL-Zertifiakten über Let's Encrypt und einer WebServer Instanz. Dabei wird das Zertifiakt per Knopfdruck angefordert und validiert, sodass der IP-Symcon Dienst nur noch neu gestartet werden muss, um das neue Zertifikat "Live" zu schalten. Wichtig ist, dass die gewünschte Domain korrekt auf das IP-Symcon System und den Port 443 weitergeleitet wird, da dies zur korrekten Verifikation seitens Let's Encrypt erforderlich ist 
 
 ### 2. Vorraussetzungen
 
@@ -22,7 +22,7 @@ Beschreibung des Moduls.
 ### 3. Software-Installation
 
 * Über den Module Store das 'LetsEncrypt'-Modul installieren.
-* Alternativ über das Module Control folgende URL hinzufügen
+* Alternativ über das Module Control folgende URL hinzufügen: https://github.com/paresy/LetsEncrypt
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
@@ -31,10 +31,11 @@ Beschreibung des Moduls.
 
 __Konfigurationsseite__:
 
-Name     | Beschreibung
--------- | ------------------
-         |
-         |
+Name           | Beschreibung
+-------------- | ------------------
+E-Mail Adresse | E-Mail Adresse zur Kommunikation bei Fehlern oder bei einem drohenden Ablaufen des Zertifikats
+Domain         | Vollständige Domain (z.B. www.example.com) für welche das SSL Zertifiakt angefordert werden soll
+Web Server     | ID der WebServer Instanz, in der das Zertifikat konfiguriert wird
 
 ### 5. Statusvariablen und Profile
 
@@ -42,17 +43,11 @@ Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzeln
 
 #### Statusvariablen
 
-Name   | Typ     | Beschreibung
------- | ------- | ------------
-       |         |
-       |         |
+Es werden keine Statusvariablen erstellt.
 
 #### Profile
 
-Name   | Typ
------- | -------
-       |
-       |
+Es werden keine Profile erstellt. 
 
 ### 6. WebFront
 
@@ -60,8 +55,8 @@ Die Funktionalität, die das Modul im WebFront bietet.
 
 ### 7. PHP-Befehlsreferenz
 
-`boolean LE_BeispielFunktion(integer $InstanzID);`
-Erklärung der Funktion.
+`string FetchCertificate(integer $InstanzID);`
+Fordert ein neues Zertifikat an, validiert dieses und konfiguriert den angegeben WebServer.
 
 Beispiel:
-`LE_BeispielFunktion(12345);`
+`echo FetchCertificate(12345);`
