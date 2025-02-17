@@ -4,7 +4,7 @@
     "author": "Michael Maroszek",
     "url": "http://github.com/paresy/LetsEncrypt",
     "compatibility": {
-        "version": "5.5"
+        "version": "8.0"
     },
     "version": "1.0",
     "build": 0,
